@@ -1,11 +1,8 @@
 package com.flermise.community.controller;
 
 
-import com.flermise.community.Model.Question;
 import com.flermise.community.Model.User;
 import com.flermise.community.dto.PaginationDTO;
-import com.flermise.community.dto.QuestionDTO;
-import com.flermise.community.mapper.QuestionMapper;
 import com.flermise.community.mapper.UserMapper;
 import com.flermise.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController {
