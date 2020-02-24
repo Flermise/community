@@ -20,6 +20,9 @@ create table USER
     constraint USER_PK
         primary key (ID)
 );
+```
 
+```bash
 mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```

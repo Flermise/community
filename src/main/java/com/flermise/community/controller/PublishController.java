@@ -1,10 +1,9 @@
 package com.flermise.community.controller;
 
 
-import com.flermise.community.Model.Question;
-import com.flermise.community.Model.User;
+import com.flermise.community.model.Question;
+import com.flermise.community.model.User;
 import com.flermise.community.dto.QuestionDTO;
-import com.flermise.community.mapper.QuestionMapper;
 import com.flermise.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

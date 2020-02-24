@@ -1,7 +1,7 @@
 package com.flermise.community.controller;
 
 
-import com.flermise.community.Model.User;
+import com.flermise.community.model.User;
 import com.flermise.community.dto.AccessTokenDTO;
 import com.flermise.community.dto.GithubUser;
 import com.flermise.community.mapper.UserMapper;
