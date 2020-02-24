@@ -3,38 +3,51 @@
 <head>
     <title>发布—FLS社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="css/community.css" />
-    <script src="js/jquery.min.js" type="application/javascript"></script>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script src="/js/jquery.min.js" type="application/javascript"></script>
+    <script src="/ijs/bootstrap.min.js" type="application/javascript"></script>
 
 </head>
 <body>
 <div th:insert="navigation :: nav"></div>
 <div class="container-fluid main">
     <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题（简单）</label>
-                    <input  type="text"  name="title" class="form-control" id="title" placeholder="问题标题...">
+                    <input type="text" name="title" th:value="${title}" class="form-control" id="title" placeholder="问题标题...">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充（详细）</label>
-                    <textarea name="description" class="form-control" id="description" rows="12" placeholder="问题补充..."> </textarea>
+                    <textarea th:text="${description}" name="description" class="form-control" id="description" rows="10" cols="30"
+                              placeholder="问题补充...">
+                    </textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">标签</label>
-                    <input type="text" name="tag" class="form-control" id="tag" placeholder="标签..."/>
+                    <input type="text" th:value="${tag}"  name="tag" class="form-control" id="tag" placeholder="标签..."/>
                 </div>
-                <span class="alert alert-danger" th:text="${error}"th:if="${error}!=null"></span>
-                <button type="submit" class="btn btn-success btn-publish">发布</button>
+                <div class="container-fluid main">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" th:text="${error}"
+                                 th:if="${error}!=null">
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-success btn-publish">发布</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-        <h3>问题发布指南</h3>
+            <h3>问题发布指南</h3>
             - 问题标题 <br>
             - 问题补充 <br>
             - 问题标签 <br>
