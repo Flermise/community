@@ -23,4 +23,10 @@
     VIEW_COUNT = VIEW_Count + #{viewCount,jdbcType=INTEGER}
     WHERE id = #{id}
   </update>
+    <update id="incComment" parameterType="com.flermise.community.model.Question">
+    update QUESTION
+    set
+    COMMENT_COUNT = COMMENT_COUNT + #{commentCount,jdbcType=INTEGER}
+    WHERE id = #{id}
+  </update>
 </mapper>
