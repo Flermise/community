@@ -11,6 +11,7 @@ public class CommentDTO {
     private Long commentator;
     private Long gmtCreate;
     private Long favCount;
+    private Integer commentCount;
     private String comment;
     private User user;
 }

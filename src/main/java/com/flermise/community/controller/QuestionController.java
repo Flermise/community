@@ -3,6 +3,7 @@ package com.flermise.community.controller;
 
 import com.flermise.community.dto.CommentDTO;
 import com.flermise.community.dto.QuestionDTO;
+import com.flermise.community.enums.CommentTypeEnum;
 import com.flermise.community.service.CommentService;
 import com.flermise.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class QuestionController {
                            Model model
     ) {
         QuestionDTO questionDTO = questionService.getById(id);
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
         //阅读数
         questionService.incView(id);
         model.addAttribute("question",questionDTO);
