@@ -25,11 +25,15 @@
                     <h4 class="media-heading" th:text="${question.title}"></h4>
                     <span th:text="${question.description}"></span>
                     <span class="text-desc">
-                    <span th:text="${question.commentCount}"></span>个评论 |
-                    <span th:text="${question.viewCount}"></span>个观看 |
-                    <span th:text="${question.favCount}"></span>个收藏 |
-                    <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span>
-                </span>
+                        <span th:text="${question.commentCount}"></span>个评论 |
+                        <span th:text="${question.viewCount}"></span>个观看 |
+                        <span th:text="${question.favCount}"></span>个收藏 |
+                        <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span>
+                        <a th:href="@{'/publish/'+ ${question.id}}" class="community-menu pull-right"
+                           th:if="${session.user != null && session.user.id == question.creator}">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true">编辑</span>
+                        </a>
+                    </span>
                 </div>
             </div>
             <nav aria-label="Page navigation">
