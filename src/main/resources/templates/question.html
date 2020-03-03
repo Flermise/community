@@ -66,13 +66,11 @@
                         </h5>
                         <div th:text="${comment.comment}"></div>
                         <div class="icon-menu">
-                            <span class="glyphicon glyphicon-thumbs-up icon" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
                             <span class="comment-icon" th:data-id="${comment.id}"
-                                  onclick="collapseComments(this)"
-                                  aria-hidden="true">
+                                  onclick="collapseComments(this)">
                                 <span class="glyphicon glyphicon-comment"></span>
                                 <span th:text="${comment.commentCount}"></span>
-                                <span>  </span>
                             </span>
                             <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
                         </div>
@@ -109,7 +107,7 @@
                     </div>
                 </div>
                 <input type="hidden" id="question_id" th:value="${question.id}">
-                <textarea class="form-control comment" rows="6"> </textarea>
+                <textarea class="form-control comment" rows="6" name="comment_context" id="comment_context"> </textarea>
                 <button type="button" class="btn btn-success btn-publish" onclick="post()">回复</button>
             </div>
 

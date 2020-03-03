@@ -3,6 +3,8 @@ package com.flermise.community.service;
 
 import com.flermise.community.dto.CommentDTO;
 import com.flermise.community.enums.CommentTypeEnum;
+import com.flermise.community.enums.NotificationStatusEnum;
+import com.flermise.community.enums.NotificationTypeEnum;
 import com.flermise.community.exception.CustomizeErrorCode;
 import com.flermise.community.exception.CustomizeException;
 import com.flermise.community.mapper.*;
@@ -35,8 +37,11 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @Transactional  //采用事务进行捆绑式操作
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commentator) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
@@ -50,12 +55,17 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
-
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
             //增加评论数
             Comment parentComment = new Comment();
             parentComment.setId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incComment(parentComment);
+            //创建通知
+            createNotify(comment, dbComment.getCommentator(),commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -66,8 +76,22 @@ public class CommentService {
             commentMapper.insert(comment);
             question.setCommentCount(1);            //增加的步长
             questionExtMapper.incComment(question);
-
+            //创建通知
+            createNotify(comment,question.getCreator(),commentator.getName(),question.getTitle(),NotificationTypeEnum.REPLY_QUESTION, question.getId());
         }
+    }
+
+    private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+        Notification record = new Notification();
+        record.setGmtCreate(System.currentTimeMillis());
+        record.setType(notificationType.getType());
+        record.setOuterId(outerId);
+        record.setNotifier(comment.getCommentator());
+        record.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        record.setReceiver(receiver);
+        record.setNotifierName(notifierName);
+        record.setOuterTitle(outerTitle);
+        notificationMapper.insert(record);
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {

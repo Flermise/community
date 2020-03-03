@@ -1,9 +1,6 @@
 package com.flermise.community.mapper;
 
 import com.flermise.community.model.Question;
-import com.flermise.community.model.QuestionExample;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
