@@ -1,6 +1,5 @@
 package com.flermise.community.dto;
 
-import com.flermise.community.model.User;
 import lombok.Data;
 
 @Data

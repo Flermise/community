@@ -2,25 +2,55 @@ package com.flermise.community.provider;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.flermise.community.exception.CustomizeErrorCode;
+import com.flermise.community.exception.CustomizeException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
+import java.net.URL;
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class AliyunProvider {
-    // Endpoint以杭州为例，其它Region请按实际情况填写。
-    String endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
-    // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
-    String accessKeyId = "LTAI4FfyotBf3e9Dw5idqKBc";
-    String accessKeySecret = "Vrjckmu44qE2b1jwwjd4S2RlVBF9by";
+    @Value("${Aliyun.afile.endPoint}")
+    private String endpoint;
 
-    // 创建OSSClient实例。
-    OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+    @Value("${Aliyun.afile.AccessKeyId}")
+    private String accessKeyId;
 
-    // 创建PutObjectRequest对象。
-    String content = "Hello OSS";
-    // <yourObjectName>表示上传文件到OSS时需要指定包含文件后缀在内的完整路径，例如abc/efg/123.jpg。
-    PutObjectRequest putObjectRequest = new PutObjectRequest("<yourBucketName>", "<yourObjectName>", new ByteArrayInputStream(content.getBytes()));
+    @Value("${Aliyun.afile.AccessKeySecret}")
+    private String accessKeySecret;
+
+    @Value("${Aliyun.afile.BucketName}")
+    private String bucketName;
+
+    private OSS getConnect() {
+        return new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+    }
+
+    public String upload(InputStream inputStream, String fileName) {
+
+        OSS ossClient = getConnect();
+        try {
+            String generatedFileName = "";
+            String[] filePaths = fileName.split("\\.");
+            if (filePaths.length > 1) {
+                generatedFileName = UUID.randomUUID().toString() + "." + filePaths[filePaths.length - 1];
+            } else {
+                return null;
+            }
+            ossClient.putObject(bucketName, generatedFileName, inputStream);
+            Date date  = new Date(new Date().getTime() + 3600l * 1000 * 24 * 365);
+            URL url  = ossClient.generatePresignedUrl(bucketName,generatedFileName,date);
+            ossClient.shutdown();
+            return url.toString();
+        }catch (OSSException e){
+            throw new CustomizeException(CustomizeErrorCode.UPLOAD_FILE_ERROR);
+        }
+    }
 
 }
