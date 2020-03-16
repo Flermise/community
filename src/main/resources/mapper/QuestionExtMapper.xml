@@ -46,7 +46,7 @@
             resultMap="BaseResultMap">
         select * from QUESTION
         <where>
-            <if test="search != null">
+            <if test="search != null and search != ''">
                  TITLE regexp #{search}
             </if>
         </where>
