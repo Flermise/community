@@ -13,9 +13,10 @@ mvn flyway:migrate
 ```sh
 mvn package
 ```
-5. 运行项目  
+5. 运行项目(以后台方式 指定配置运行)  
 ```sh
-java -jar target/community-0.0.1-SNAPSHOT.jar
+nohup  java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar /null &>/dev/null &
+
 ```
 ## 资料
 [SpringWeb](https://spring.io/guides/gs/serving-web-content/)
